@@ -1,7 +1,7 @@
 Unity3DScripts
 ==============
 
-This is collection of simple scripts in C# for Unity3D game programming.
+This is a collection of simple scripts in C# for Unity3D game programming.
 
 The following are the names and a brief decription of files:
 
