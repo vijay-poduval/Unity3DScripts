@@ -10,25 +10,31 @@ using System.Collections;
 public class BloodSmear : MonoBehaviour {
 
 	// Variable declaration
-	public UITexture blood_texture;
+	public GUITexture blood_texture;
+
+	// Color of texture
+	private Color texture_color; 
+	private float texture_alpha;
 
 	// Use this for initialization
 	void Start () {
 
+		// Get the color of the texture
+		texture_color = blood_texture.color;
 		// Set the blood texture transparency to 0
-		blood_texture.alpha = 0;
+		texture_alpha = 0.0f;
 		// Start the co routine for smear effect
-		StartCoroutine (blood_smear(blood_texture));
+		StartCoroutine (blood_smear());
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-	IEnumerator blood_smear(UITexture blood_texture)
+	IEnumerator blood_smear()
 	{
 		// Insitialize the beginning and ending values for alpha
-		float start_alpha = blood_texture.alpha;
+		float start_alpha = texture_alpha;
 		float final_alpha = 1.0f;
 		//Set the time duration
 		float currTime = 0.0f;
@@ -48,7 +54,8 @@ public class BloodSmear : MonoBehaviour {
 					// Update the current time
 					currTime += Time.deltaTime;
 					// Inetrpolate between start and final alphas
-					blood_texture.alpha = Mathf.Lerp(start_alpha, final_alpha, currTime/duration );
+					texture_alpha = Mathf.Lerp(start_alpha, final_alpha, currTime/duration );
+
 					// Return control to update
 					yield return null;
 				}
@@ -60,6 +67,14 @@ public class BloodSmear : MonoBehaviour {
 				final_alpha = temp;
 			}
 		}
+	}
+	void OnGUI()
+	{
+		blood_texture.pixelInset.center.Set(0.0f,0.0f);
+		blood_texture.pixelInset = new Rect(-Screen.width/2,-Screen.height/2,Screen.width,Screen.height);
+		blood_texture.color  = new Color(texture_color.r,texture_color.g,texture_color.b,texture_alpha);
+		//GUI.DrawTexture(Rect.MinMaxRect(0,0,Screen.width,Screen.height),blood_texture.texture);
+
 	}
 
 }
